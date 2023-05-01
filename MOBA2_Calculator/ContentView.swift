@@ -34,43 +34,64 @@ struct OperationButton : View {
 
 struct ContentView: View {
     @State var resultField : String = String(0)
-    @State var currentResult: Int?
-    @State var firstNo : String = ""
-    @State var secondNo : String = ""
+    @State var currentResult: Int = 0
+    @State var firstNo : String = "0"
+    @State var secondNo : String = "0"
     @State var operation : String?
     
+    func setOperation(_ operation: String) {
+        self.operation = operation
+    }
+    
+    //TODO calculation should happen when a operation button is clicked
+    
     var body : some View {
+        
         VStack {
             Spacer().padding()
+            Text("MOBA2 Calculator")
             HStack {
-                Spacer()
-                TextField("Enter first number", text: $firstNo)
-                Spacer()
+                Spacer().padding()
+                TextField("Enter first number", text: $firstNo).keyboardType(UIKeyboardType.decimalPad)
+                Spacer().padding()
 
             }
             
             HStack {
                 OperationButton(
-                placeholder: "+"
-                )
+                placeholder: "+",
+                action: {
+                    setOperation("+")
+                }).frame(height: 15).padding()
                 OperationButton(
-                placeholder: "-"
-                )
+                placeholder: "-",
+                action: {
+                    setOperation("-")
+                }).frame(height: 15).padding()
                 OperationButton(
-                placeholder: "*"
-                )
+                placeholder: "*",
+                action: {
+                    setOperation("*")
+                }).frame(height: 15).padding()
                 OperationButton(
-                placeholder: "?"
-                )
-            }
+                placeholder: "/",
+                action: {
+                    setOperation("/")
+                }).frame(height: 15).padding()
+            }.padding()
             
             HStack {
-                Spacer()
-                TextField("Enter second number", text: $firstNo)
-                Spacer()
+                Spacer().padding()
+                TextField("Enter second number", text: $secondNo)
+                    .keyboardType(UIKeyboardType.decimalPad)
+                Spacer().padding()
 
-            }
+            }.padding()
             Spacer().padding()
+            Text("Result:").padding()
+            Text(self.resultField)
+            Spacer().padding()
+
         }
 
     }
