@@ -35,15 +35,48 @@ struct OperationButton : View {
 struct ContentView: View {
     @State var resultField : String = String(0)
     @State var currentResult: Int = 0
-    @State var firstNo : String = "0"
-    @State var secondNo : String = "0"
-    @State var operation : String?
+    @State var firstNo : String = ""
+    @State var secondNo : String = ""
+    @State var operation : String = ""
     
     func setOperation(_ operation: String) {
         self.operation = operation
     }
     
-    //TODO calculation should happen when a operation button is clicked
+    func reset() {
+        operation = ""
+    }
+    
+    func convertStringToInt(_ string: String) -> Int {
+        return Int(string) ?? 0
+    }
+    
+    func calculateResult(_ operation: String) -> String {
+        
+        var result = 0
+        
+        if (operation == "+") {
+            result = convertStringToInt(firstNo) + convertStringToInt(secondNo)
+        }
+        
+        if (operation == "-") {
+            result = convertStringToInt(firstNo) - convertStringToInt(secondNo)
+        }
+        
+        if (operation == "*") {
+            result = convertStringToInt(firstNo) * convertStringToInt(secondNo)
+        }
+        
+        if (operation == "/") {
+            if (self.secondNo == String(0)) {
+                // do nothing
+            } else {
+                result = convertStringToInt(firstNo) / convertStringToInt(secondNo)
+            }
+        }
+        
+        return String(result)
+    }
     
     var body : some View {
         
@@ -62,21 +95,30 @@ struct ContentView: View {
                 placeholder: "+",
                 action: {
                     setOperation("+")
+                    self.resultField = calculateResult(operation)
+                    reset()
                 }).frame(height: 15).padding()
                 OperationButton(
                 placeholder: "-",
                 action: {
                     setOperation("-")
+                    self.resultField = calculateResult(operation)
+                    reset()
                 }).frame(height: 15).padding()
                 OperationButton(
                 placeholder: "*",
                 action: {
                     setOperation("*")
+                    self.resultField = calculateResult(operation)
+                    reset()
                 }).frame(height: 15).padding()
                 OperationButton(
                 placeholder: "/",
                 action: {
                     setOperation("/")
+                    self.resultField = calculateResult(operation)
+                    reset()
+
                 }).frame(height: 15).padding()
             }.padding()
             
@@ -91,7 +133,6 @@ struct ContentView: View {
             Text("Result:").padding()
             Text(self.resultField)
             Spacer().padding()
-
         }
 
     }
